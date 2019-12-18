@@ -1,0 +1,102 @@
+h1,h2,h3,h4,h5,h6,a,p{
+	font-family: 'Roboto', sans-serif;;
+}
+.img_fundo{
+	background-attachment: fixed;
+	background-size: cover;
+	background-repeat:no-repeat;
+	background-color: #000;
+}
+#antares{
+	background-image: url(frente.jpg);
+}
+#ceu{
+	background-image: url(ceu.png);
+}
+#sobre{
+	background-image: url(antares.jpg);
+}
+#observatorio{
+	background-image: url(noite.png);
+}
+.logo{
+	width: 100%;
+	max-width: 190px;
+	max-height: 190px;
+}
+.nav_grande{
+	padding-top: 1.5%;
+	padding-bottom: 1.5%;
+}
+.nav_small{
+	padding-top: 0.5%;
+	padding-bottom: 0.5%;
+}
+.contato{
+	color: #000;
+	font-weight: 700;
+}
+.info_contato{
+	font-size: 1.1rem;
+	font-weight: 500;
+}
+.form_contato{
+	color: #000;
+	font-weight: 500;
+}
+.sobre_texto{
+	font-weight: 500;
+}
+.topico{
+	font-weight: 900;
+	color: #16103a;
+	font-size: 2.2rem ;
+}
+.btn_mensagem{
+	font-weight: 700;
+	color: #000;
+	border-color: #16103a;
+	margin-top: 15px;
+}
+.btn_mensagem:hover{
+	background-color: #16103a;
+	color: #fff;
+}
+.branco{
+	color: #fff !important;
+}
+.nav_cor{
+	background-color: #006A9D !important;
+}
+.nav_transparente{
+	background-color: transparent !important; 
+}
+#calendario{	
+	color: #fff;	
+}
+.fc-scroller {
+	height: auto !important;
+   
+}
+.fc-today{
+	background-color: #fff !important;
+	color: #000 !important;
+}
+.cinza{
+	color: #6c6c6c !important;
+}
+.text-gray-400 {
+  color: #d1d3e2 !important;
+}
+.img-profile {
+  height: 2rem;
+  width: 2rem;
+}
+.radio{
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+}
+
+
+
