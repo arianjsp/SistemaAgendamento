@@ -1,3 +1,11 @@
+<?php 
+session_start();
+/**
+include 'php/conexao.php';
+$sql="SELECT * FROM contato";
+$query = mysqli_query($conexao,$sql);
+$contato = mysqli_fetch_assoc($query); **/
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,14 +27,7 @@
     <link href="css/adm.css" rel="stylesheet">
     <link rel="sortcut icon" href="img/antares.png" type=".png" />
 
-    <?php 
-       session_start();
-      /**
-      include 'php/conexao.php';
-      $sql="SELECT * FROM contato";
-      $query = mysqli_query($conexao,$sql);
-      $contato = mysqli_fetch_assoc($query); **/
-    ?>
+    
 
 </head>
 
