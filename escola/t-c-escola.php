@@ -44,22 +44,43 @@ $result_query = mysqli_query($conn, $query); // RETORNA PESQUISA COM RESULTADO D
 					eventLimit: true, // allow "more" link when too many events
 					eventClick: function(event) {
 						
-						$('#visualizar #id').text(event.id);
-						$('#visualizar #id').val(event.id);
+						$('#visualizar #id').text(event.id); // SETA TEXTO ID
+						$('#visualizar #id').val(event.id); // SETA VALOR ID
 						$('#visualizar #estagiario').text(event.estagiario);
 						$('#visualizar #estagiario').val(event.estagiario);
 						$('#visualizar #title').text(event.title);
 						$('#visualizar #title').val(event.title);
 						$('#visualizar #descricao').text(event.descricao);
 						$('#visualizar #descricao').val(event.descricao);
-						$('#visualizar #vagas').text(event.vagas);
-						//$('#visualizar #vagas').val(event.vagas);
+						$('#visualizar #vagas').text(event.vagas); //SETA TEXTO DAS VAGAS
+						$('#visualizar #vagas').val(event.vagas);	//SETA QUANTIDADE DAS VAGAS // PRA CONSEGUIR ENVIAR ESSE VALOR IMPUT HIDDEN
 						$('#visualizar #start').text(event.start.format('DD/MM/YYYY HH:mm:ss'));
 						$('#visualizar #start').val(event.start.format('DD/MM/YYYY HH:mm:ss'));
 						$('#visualizar #end').text(event.end.format('DD/MM/YYYY HH:mm:ss'));
 						$('#visualizar #end').val(event.end.format('DD/MM/YYYY HH:mm:ss'));												
-						$('#visualizar #color').val(event.color);						
+						$('#visualizar #color').val(event.color);
+
+						//PRA EXIBIR OU NÃO OS BOTÕES CORRETOS.
+						var vagas = $('#visualizar #vagas').val(); // RETORNA QUANTIDADE DE VAGAS
+						if(vagas == 0)
+						{
+							//document.getElementById("zero").style.visibility = 'hidden'; //OCULTA BOTÃO
+							document.getElementById("zero").disabled = true; // DESABILITA BOTÃO
+						}
+						else
+						{
+							//document.getElementById("zero").style.visibility = 'visible'; // MOSTRA BOTÃO							
+							document.getElementById("zero").disabled = false; // HABILITA BOTÃO
+						}
+						//PRA EXIBIR OU NÃO OS BOTÕES CORRETOS.
+						
+
 						$('#visualizar').modal('show');
+						/*
+						$('#visualizar').modal({
+						  keyboard: true
+						});
+						*/
 						return false;
 
 					},
@@ -175,7 +196,9 @@ $result_query = mysqli_query($conn, $query); // RETORNA PESQUISA COM RESULTADO D
 								<dt>Vagas</dt>
 								<dd id="vagas"></dd>
 							</dl>
-							<button class="btn btn-canc-vis btn-success">AGENDAR VISITA</button>
+							<button id="zero" class="btn btn-agenda-visita btn-success">AGENDAR VISITA</button>
+							<button class="btn btn-lista-espera btn-primary">LISTA ESPERA</button>
+							<button class="btn btn-solicitar-vagas btn-warning">SOLICITAR VAGAS</button>
 						</div>
 						<div class="form">
 							<form class="form-horizontal" method="POST" action="proc-edit-evento-escola.php">								
@@ -183,21 +206,28 @@ $result_query = mysqli_query($conn, $query); // RETORNA PESQUISA COM RESULTADO D
 								-->
 								<?php
 								//if ($agendar == TRUE) {
-								if ($qtd) {
+								if ($qtd) {	// SE DIFERENTE DE ZERO É VERDADEIRO
 								?>
-									<label>Escolha uma Turma para realizar o agendamento: </label>
+									<label>Escolha a Turma : </label>
 									<select name="turmas" id="turmas">
 										<option value="0">Selecione</option>
 								<?php
-									require_once("compara.php");
+									require_once("compara-select.php");
+									//$query = "SELECT vagas FROM eventos WHERE id=$id";// PESQUISA TODOS OS EVENTOS DISPONIVEIS NO BD
+									//$result_query = mysqli_query($conn, $query); // RETORNA PESQUISA COM RESULTADO DE TODOS OS EVENTOS DISPONIVEIS.
 								?>
 									</select><BR><BR>								
 									
 									<input type="hidden" class="form-control" name="id" id="id">
+									<input type="hidden" class="form-control" name="vagas" id="vagas">
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10">
-											<button type="button" class="btn btn-canc-edit btn-primary">Cancelar</button>
-											<button type="submit" class="btn btn-warning">OK</button>
+											<button type="button" class="btn btn-cancela-turma btn-secondary">cancelar</button>
+											<button type="submit" class="btn btn-ok btn-success">OK</button>											
+											<!-- <button type="submit" class="btn btn-primary">Lista Espera</button>
+											<button type="submit" class="btn btn-warning">Solicitar Vagas</button>
+											<a href='lista-espera.php' class='btn btn-primary'>Lista Espera </a>
+											<a href='mais-vagas.php' class='btn btn-warning '>Solicitar Vagas</a> -->
 										</div>
 									</div>								
 								<?php
@@ -219,17 +249,70 @@ $result_query = mysqli_query($conn, $query); // RETORNA PESQUISA COM RESULTADO D
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
+
+		<div class="modal fade" id="confirmar-agendamento-modal" tabindex="-1" role="dialog" aria-labelledby="confirmar-agendamento-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"> Confirmar Agendamento? </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">								
+								<!-- <button type="submit" class="btn btn-primary">Lista Espera</button>
+								<button type="submit" class="btn btn-warning">Solicitar Vagas</button>
+								<a href='lista-espera.php' class='btn btn-primary'>Lista Espera </a>
+								<a href='mais-vagas.php' class='btn btn-warning '>Solicitar Vagas</a> -->
+							</div>
+						</div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="cancela.php">
+                        	<button type="button" class="btn btn-cancela-agenda btn-secondary">cancelar</button>
+                        </a>
+						<a href="proc-edit-evento-escola.php">
+							<button type="submit" class="btn btn-confirma btn-success">CONFIRMAR</button>
+						</a>
+                    </div>
+                </div>
+            </div>
+        </div>	
+
+        
 		
 		<script>
-			$('.btn-canc-vis').on("click", function() {
+			$('.btn-agenda-visita').on("click", function() {
 				$('.form').slideToggle();
 				$('.visualizar').slideToggle();
 			});
-			$('.btn-canc-edit').on("click", function() {
+			$('.btn-cancela-turma').on("click", function() {
 				$('.visualizar').slideToggle();
 				$('.form').slideToggle();
+			});
+			$('.btn-lista-espera').on("click", function() {
+				$('.form').slideToggle();
+				$('.visualizar').slideToggle();
+			});
+			$('.btn-solicitar-vagas').on("click", function() {
+				$('.form').slideToggle();
+				$('.visualizar').slideToggle();
 			});
 		</script>
+
+		<?php		/*
+		if(isset($_SESSION['turma']))
+		{
+		?>
+		<script>
+			$(document).ready(function()
+			{
+				$('#confirmar-agendamento-modal').modal('show');								
+			});
+		</script>
+		<?php
+		}			*/			
+		?>
 	</body>
 </html>
